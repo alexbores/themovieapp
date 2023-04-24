@@ -28,7 +28,6 @@
 
       <div class="movie add" >
         <div class="poster" @click="addMovie">
-          <!-- <img :src="'https://image.tmdb.org/t/p/w500/'+movies[0]?.poster_path"> -->
           <p>+</p>
         </div>
         <p >Add Movie</p>
@@ -53,14 +52,14 @@ export default {
 
     const editMovie = (index) => {
       editingIndex.value = index;
-      editedTitle.value = props.movies[index].title; // Set the editedTitle value to the original movie title
+      editedTitle.value = props.movies[index].title; 
     };
 
     const saveMovie = (index) => {
       const editedMovie = { ...props.movies[index], title: editedTitle.value };
       emit("update", { index, movie: editedMovie });
       editingIndex.value = -1;
-      editedTitle.value = ''; // Reset the editedTitle value after saving
+      editedTitle.value = '';
     };
 
     const cancelEdit = () => {
