@@ -18,7 +18,7 @@ export async function getMovie(movies) {
   try {
     const response = await axios.get(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${nextPage}`);
     const data = response?.data.results;
-    console.log(data);
+    // console.log(data);
     return data.find(
       (movie) => !movies.some((m) => m.id === movie.id)
     );

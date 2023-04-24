@@ -1,4 +1,5 @@
 <template>
+  <PageLoader :loading="loading" />
   <section>
       <MovieList :movies="movies" @remove="removeMovie" @add="addMovie" @update="updateMovie" />
   </section>
@@ -8,17 +9,23 @@
 import { ref } from 'vue';
 import { getMovies, getMovie } from './services';
 import MovieList from './components/MovieList.vue';
+import PageLoader from './components/PageLoader.vue';
 
 export default {
   components: {
     MovieList,
+    PageLoader,
   },
   setup() {
     const movies = ref([]);
+    const loading = ref();
 
     const fetchMovies = async () => {
+      setLoading(true);
       movies.value = await getMovies();
-      console.log(movies.value);
+      if(movies.value){
+        setLoading(false);
+      }
     };
 
     const removeMovie = (index) => {
@@ -26,9 +33,11 @@ export default {
     };
 
     const addMovie = async () => {
+      setLoading(true);
       const nextMovie = await getMovie(movies.value);
       if (nextMovie) {
         movies.value.push(nextMovie);
+        setLoading(false);
       }
     };
 
@@ -36,11 +45,17 @@ export default {
       movies.value.splice(index, 1, movie);
     };
     
+    const setLoading = (val) => {
+      window.setTimeout(()=>{
+        loading.value = val;
+      }, (val === false)?500:1);
+    }
+
     
 
     fetchMovies();
 
-    return { movies, removeMovie, addMovie, updateMovie };
+    return { movies, removeMovie, addMovie, updateMovie, loading };
   },
 };
 </script>
